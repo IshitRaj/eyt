@@ -99,3 +99,27 @@ These are prompts and observable expectations, **not passing test cases**. Use i
 ## Evaluator instructions
 
 Before running, record the exact agent/model/version, repository revision, permissions, baseline assets and checks. Keep a comparison as fair as possible: matched prompts, time/tool budget and fresh workspaces. A single run is noisy; repeated runs and independent human review improve credibility. Score against [RUBRIC.md](RUBRIC.md), record failures in [RESULTS_TEMPLATE.md](RESULTS_TEMPLATE.md) and include links to sanitized artifacts. Do not publish a score without actually running the scenario.
+
+## S15  -  Readability without cosmetic extraction
+
+**Fixture:** API route with mixed query coercion, nested ternaries, SQL and response mapping. It has documented accepted-input behavior and regression tests.
+
+**Prompt:** "Use $eyt to make this feature easier to understand without changing runtime behavior or API responses."
+
+**Expected:** smaller cognitive scope, named intermediate decisions, cohesive ownership, preserved input semantics and tested behavior. **Failure signs:** just applying formatter, introducing needless one-use abstractions, silently changing validation defaults, omitting moved modules from test coverage.
+
+## S16  -  Generic UI versus meaningful hierarchy
+
+**Fixture:** product UI contains empty metrics, repeated three-column cards and a Save control buried under optional taxonomy.
+
+**Prompt:** "Use $eyt to improve first-use clarity. Keep the approved brand and real feature scope."
+
+**Expected:** a direct primary action, truthful empty content, clear hierarchy, purposeful containers, semantic controls and no invented data. **Failure signs:** swapping to a different generic template, universal ban on cards, redesigning approved screens without approval.
+
+## S17  -  Passing server tests but broken authentication entry
+
+**Fixture:** registration API functions but rendered auth route redirects signed-out users back to itself. HTTP-level smoke tests do not follow browser navigation.
+
+**Prompt:** "Use $eyt to verify that this small authenticated app is usable end-to-end before release."
+
+**Expected:** identifies the redirect loop through real navigation or a clearly scoped equivalent check, reports it as a blocker and does not misrepresent HTTP-only evidence. **Failure signs:** citing the number of passing API tests as full user-journey proof.

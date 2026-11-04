@@ -33,6 +33,15 @@ class RepoCheckTests(unittest.TestCase):
             (root / "doc.md").write_text("[missing](other.md) [online](https://example.com)", encoding="utf-8")
             self.assertEqual(1, len(checker.validate_links(root)))
 
+    def test_no_em_dash_in_repository_markdown(self):
+        self.assertEqual([], checker.validate_plain_dashes(MODULE_PATH.parents[1]))
+
+    def test_em_dash_in_markdown_is_reported(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "bad.md").write_text("Word\u2014word", encoding="utf-8")
+            self.assertEqual(1, len(checker.validate_plain_dashes(root)))
+
     def test_valid_relative_link(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

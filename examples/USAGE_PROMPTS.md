@@ -43,3 +43,15 @@ Expected behavior: prioritized report with evidence and honest blockers, not a b
 > Use $eyt in planning-only mode for a simple appointment-booking service. I want an engineering brief, minimum data model, UX flow, key risks, acceptance criteria and release checks. Do not write code or create infrastructure yet.
 
 Expected behavior: no unintended side effects or code; reservations and timezones considered where applicable.
+
+## Beginner-led build with explicit engineering defaults
+
+> Use $eyt to build a personal expense tracker with accounts, monthly budgets and category filtering. I know the features but not all the security, UX and architecture details. Choose the smallest sound implementation, explain the key choices briefly, write readable code with clear feature boundaries, and test signup and a failed save through the actual UI. Do not add tracking, payments or deploy.
+
+## Focused code readability audit
+
+> Use $eyt to review the actual path from a form submission to the database. Identify ambiguous naming, dense branching, unnecessary layers, mixed responsibilities and untested failure behavior. Show a concrete before/after refactor that preserves accepted input and public behavior. Don't rewrite the interface.
+
+## Generic UI audit without imposing a style
+
+> Use $eyt to identify whether this interface uses unnecessary cards, decorative badges, generic headings, invented data or a confusing first-action path. Judge against the user's task and the existing design, not against a universal minimalist style. Make only approved changes and check real empty/loading/error states.

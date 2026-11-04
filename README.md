@@ -1,87 +1,96 @@
-# EYT  -  Engineer Your Thing
+# EYT: Engineer Your Thing
 
-**Make AI agents think beyond “it works.”**
+**Make AI agents think beyond "it works."**
 
-EYT is an experimental, open-source [Agent Skill](https://agentskills.io/) that gives coding agents a structured way to plan, build, refactor, review and prepare **web applications and SaaS** for release. It emphasizes useful UX, readable architecture, trustworthy data handling, server-side authorization, privacy by design, failure recovery and honest verification.
+EYT is an experimental, open-source [Agent Skill](https://agentskills.io/specification) for building and reviewing **web applications and SaaS**. It tries to act as the engineering guide a user might not know to ask for: choosing a sensible architecture, avoiding generic UI decisions, writing readable code, protecting data, handling failure and checking whether real user journeys work.
 
-It is written for people who can describe **what they want to build** but may not know every technical decision they should ask an AI agent to make. It is also useful to developers who want a consistent engineering checklist without a rigid framework.
+**Version: v0.2.0 (experimental, 4 November 2026).** This release passes repository packaging checks, but **has not been evaluated in comparative coding-agent runs**. A previous, informal comparison evaluated v0.1.0 only and does not establish that EYT caused the reported differences. EYT is not proven to reduce defects, improve readability or make software secure. Use it critically and report where it fails.
 
-> **Status: v0.1.0  -  experimental.** EYT has not been benchmarked across independent projects or coding agents, independently security-audited, or proven to reduce defects. The package includes structural checks and proposed evaluations, **not performance results**. Contributions and critical testing are welcome.
+## The problem
 
-## The problem EYT tries to address
+Someone can describe the app they need without knowing to request server-side authorization, reliable write feedback, meaningful empty states, maintainable module boundaries, or a test that actually opens the sign-in screen. AI coding agents may make plausible choices that compile but fall short of those expectations.
 
-A generated application can look complete while hiding problems: a save that didn't persist, an inaccessible dialog, an unscoped data query, fake demo records, a missing failure state, overcomplicated modules, or a production build with no tested rollback. A vague request like “build me a SaaS” does not tell an agent what assurances matter.
+EYT attempts to bridge the gap **without turning every hobby project into enterprise architecture**. It tells the agent what to examine, what default to choose, what AI-generated shortcuts to watch for, and how to test that the decision works.
 
-EYT supplies *procedural engineering questions and decision boundaries*. It does **not** supply a universal stack, force every site into enterprise architecture, or promise to catch every security issue.
+## What changed in v0.2.0
 
-## What it asks an agent to do
+Version 0.1.0 mostly described desired engineering outcomes. Version 0.2.0 makes those instructions more operational:
 
-1. Understand the actual user goal, constraints, data sensitivity and approved design.
-2. Choose an appropriately simple architecture and identify critical invariants.
-3. Implement a small end-to-end feature with clear UI, domain, data and trust boundaries.
-4. Handle failures, accessibility, privacy, concurrency and recovery in proportion to risk.
-5. Verify with evidence appropriate to each claim; separate implementation from deployment and public launch.
+1. **Default engineering decisions:** an explicit action table for UI, writes, accounts, search, async state and deployment.
+2. **Agent failure-pattern guide:** common shortcuts paired with consequences, a better default and a check that could expose the mistake.
+3. **Code craft examples:** concrete TypeScript before/after examples showing named intermediate values, cohesive functions and clear state.
+4. **Task-specific UX guidance:** common generic-interface warning signs with constructive alternatives, plus real empty/loading/error/pending states.
+5. **Authentication and verification probes:** entire browser journeys matter; a passing API suite can miss an unusable sign-in screen.
+6. **Proportionate rigor:** adapt to static sites, local tools and authenticated products. Don't add layers just to satisfy a checklist.
 
-A static site receives lightweight treatment. An authenticated product handling private data receives stronger validation, authorization, persistence and release checks.
+These are **changes to the guidance**, not measured improvements in agents' results. Version 0.2.0 has no coding-agent evaluation yet. The skill cannot replace an experienced reviewer or compensate for an agent lacking basic technical ability or tool access. See the [changelog](CHANGELOG.md) and [v0.2.0 release notes](releases/v0.2.0.md) for a precise summary.
 
-## Installation
+## A one-minute example
 
-Install the **entire** skill directory, including `references/`. These are manual, local installation instructions; nothing is automatically installed or uploaded by this repository.
+A beginner asks:
 
-### Codex (project-level)
+> Build a reading tracker where people can sign in, save links, and mark them finished. Make it look nice.
 
-From a checkout of this repository, run these commands **inside the project that will use EYT**, replacing `/path/to/eyt` with the checkout path:
+Without enough context, an agent might build an attractive mockup with sample activity, client-only accounts, one large component and a "Saved" toast before persistence. This is a possible failure pattern, **not a claim about every agent**.
+
+With EYT, the agent is instructed to choose a proportionate approach: establish actual account ownership, separate durable records from UI drafts, show truthful pending/error states, give the primary Save action a clear reading path, organize cohesive feature logic, and test signup through the actual UI and a save after reload. It should report what was checked rather than assume it worked.
+
+## Install the single skill
+
+Copy the **entire** `skills/eyt/` folder, including `references/`. Only `SKILL.md` is loaded initially by many clients; the reference files are used when relevant. Exact discovery behavior is client-specific.
+
+### OpenCode (project-local)
+
+```bash
+mkdir -p .opencode/skills
+cp -R /path/to/eyt/skills/eyt .opencode/skills/eyt
+```
+
+### Codex (project-local)
 
 ```bash
 mkdir -p .agents/skills
 cp -R /path/to/eyt/skills/eyt .agents/skills/eyt
 ```
 
-For a user-level Codex installation:
-
-```bash
-mkdir -p ~/.agents/skills
-cp -R /path/to/eyt/skills/eyt ~/.agents/skills/eyt
-```
-
-### Claude Code (project-level)
+### Claude Code (project-local)
 
 ```bash
 mkdir -p .claude/skills
 cp -R /path/to/eyt/skills/eyt .claude/skills/eyt
 ```
 
-Other agents implementing the Agent Skills format may support the same `SKILL.md`; **we have not verified compatibility across clients**. Consult your agent's current documentation for the relevant installation directory. Restart/reload the agent session if it does not discover the newly installed skill.
+Restart or reload a session after installation if your agent doesn't discover new skills automatically. Consult your client documentation if the path differs. We have not independently verified every client on every version.
 
-You can also read `skills/eyt/SKILL.md` directly and ask an agent to follow it, but skill discovery/invocation is not guaranteed in that case.
+## Upgrading from v0.1.0
 
-## How to use EYT
+Replace the existing project-local `eyt` skill directory with the full `skills/eyt/` folder from v0.2.0, including all reference files. If you modified a local copy, review and preserve those changes first. Open a new agent session and confirm it loads the intended version.
 
-Ask the agent to invoke `$eyt` explicitly while you're learning. Automatic invocation depends on the agent and the task description.
+The skill name and invocation remain `eyt`. Existing projects do **not** need architecture or UI rewrites just because the guidance changed. EYT should continue to respect approved designs, existing contracts and data.
 
-**Starting a project:**
+## Ask the agent to use it
 
-> Use $eyt to build a personal reading tracker. Explain the smallest sensible architecture and the data-loss/security trade-offs before coding. Keep the interface simple and accessible. Do not add tracking or sign-in unless needed.
+**Starting a project**
 
-**Existing project:**
+> Use EYT to build a small personal reading tracker. I know the features I want, but not all the architecture and security decisions. Choose simple, justified defaults, create a usable interface, write readable maintainable code, and test the real user journey. Do not add tracking, payments or deployment.
 
-> Use $eyt to review this application's architecture, persistence, authentication and UX. Validate whether my concerns are real. Propose prioritized fixes, preserve the approved UI and then implement only the agreed scope.
+**Improving existing code**
 
-**Before release:**
+> Use EYT to review this application. Identify actual problems in readable code structure, data flow, UI states and trust boundaries. Distinguish critical faults from style choices. Keep approved UI and behavior unchanged. Fix confirmed root causes in narrow, verified changes.
 
-> Use $eyt to assess whether this web app is ready for a public launch. Report exact checks performed, what remains unverified, security and data risks, and whether publication should be blocked. Do not deploy without my approval.
+**Planning only**
 
-**Planning without code:**
+> Use EYT in planning-only mode. Produce a concise engineering brief, user journeys, architecture decisions, trust boundaries, failure states, and acceptance checks. Do not write code or deploy.
 
-> Use $eyt in planning-only mode. Turn my product idea into a concise engineering brief, trust boundaries, core flows, acceptance criteria, and a small milestone plan. Don't edit files.
+**Release review**
 
-More prompts: [examples](examples/USAGE_PROMPTS.md).
+> Use EYT to review launch readiness. Run checks you have access to and report exact failures, unknowns and approvals still required. Do not deploy without permission.
 
-### What to expect in the answer
+For OpenCode, the agent must actually load the skill using its skill mechanism. Mentioning EYT without the tool loading `SKILL.md` does not establish that the instructions were applied. See the [official OpenCode skill documentation](https://opencode.ai/docs/skills).
 
-A useful output separates **decisions** from **observations** and **claims**. For substantive work, the skill asks for a brief handoff: outcome, trade-offs, checks actually run, remaining gaps, and next action. If a browser was unavailable, it should say so. If an API test failed, it should not quietly substitute a successful build.
+More examples: [usage prompts](examples/USAGE_PROMPTS.md).
 
-## What's inside
+## What the skill includes
 
 ```text
 eyt/
@@ -89,67 +98,54 @@ eyt/
 ├── LICENSE
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
-├── skills/
-│   └── eyt/
-│       ├── SKILL.md                 # one installable skill
-│       └── references/             # loaded by the agent when relevant
-│           ├── decision-guide.md
-│           ├── ui-ux-and-accessibility.md
-│           ├── architecture-and-readability.md
-│           ├── security-and-privacy.md
-│           ├── data-and-state.md
-│           └── verification-and-release.md
-├── docs/
-│   ├── FIELD_NOTES.md
-│   └── ORIGINS_AND_LIMITATIONS.md
-├── examples/
-│   └── USAGE_PROMPTS.md
-├── evaluations/
-│   ├── SCENARIOS.md
-│   ├── RUBRIC.md
-│   └── RESULTS_TEMPLATE.md
-└── scripts/ and tests/            # structural checks, not agent evaluations
+├── skills/eyt/
+│   ├── SKILL.md                  Core, executable engineering guidance
+│   └── references/
+│       ├── agent-failure-patterns.md
+│       ├── vertical-slice-playbook.md
+│       ├── code-craft.md
+│       ├── ui-ux-and-accessibility.md
+│       ├── architecture-and-readability.md
+│       ├── decision-guide.md
+│       ├── security-and-privacy.md
+│       ├── data-and-state.md
+│       └── verification-and-release.md
+├── docs/                        Origins, field notes, limitations
+├── examples/                    Prompts for different use cases
+├── evaluations/                 Scenarios, rubric and results template
+└── scripts/ and tests/          Static packaging checks only
 ```
 
-The `SKILL.md` stays procedural and relatively small. Supporting references are read on demand. EYT is not intended to add a permanent stack of project documents to every repository.
+The primary skill is intentionally compact. It asks the agent to read relevant references when necessary instead of loading an encyclopedia into each small task.
 
-## Try it and report whether it helps
+## Testing and evidence
 
-There are **no published comparative results** in v0.1.0. To evaluate the claim that EYT improves engineering behavior:
+There has been one **informal, unreplicated comparison reported by a user**, reviewed by a second LLM. It reported a better end-to-end user flow in the EYT-assisted candidate, but also found a session-storage weakness there. The candidate source trees and original execution traces were not independently audited here. The reviewer report alone **does not establish causality, general improvement or security effectiveness**. There has been no comparative evaluation of v0.2.0.
 
-1. Select a small, shareable project or synthetic fixture and define observable acceptance criteria **before** generating code.
-2. Run similar tasks with the **same agent/model/environment**, once with and once without EYT. Record prompt, tool access, agent version, time/cost if known, and whether the skill was actually loaded.
-3. Execute independent functional/security/UX checks. Assess the same criteria and record failures, regressions, and additional complexity.
-4. Share both successful and unsuccessful findings, with sanitized artifacts and reproducible steps.
+To help evaluate EYT:
 
-Start with [scenarios](evaluations/SCENARIOS.md) and the [rubric](evaluations/RUBRIC.md). A single anecdote is interesting, not proof of general improvement. Expect results to vary by model, task and user prompt.
+1. Choose a shareable task with acceptance criteria fixed before generation.
+2. Run the same agent/model/environment both with and without EYT. Verify the skill was loaded and record limitations, tokens/time, and interventions.
+3. Review with independent tests, including real UI journeys, security negatives, readability and extension cost. Reviewers should be blinded to the treatment if practical.
+4. Publish reproducible results, including negative outcomes and extra complexity.
+
+See the [evaluation scenarios](evaluations/SCENARIOS.md), [rubric](evaluations/RUBRIC.md) and [results template](evaluations/RESULTS_TEMPLATE.md).
 
 ### Local structural checks
-
-From the repository root:
 
 ```bash
 python3 scripts/check_repo.py
 python3 -m unittest discover -s tests -v
 ```
 
-These checks catch broken relative links and malformed packaging metadata. They do **not** invoke an AI agent, execute the example apps, assess security or establish that the skill works.
+Passing these tests means the package has a valid structure and links. **It does not test that an agent follows EYT or builds better software.**
 
-## What EYT will not do
+## What it does not promise
 
-- Guarantee security, legal compliance, accessibility, zero bugs, or production readiness.
-- Replace penetration testing, professional review, user research, or a documented threat model for high-stakes systems.
-- Force enterprise patterns into small sites or require a particular framework, database or cloud.
-- Collect analytics or add third-party services without an approved requirement.
-- Approve production deployment, payment activation, external side effects or destructive migrations by itself.
-- Fabricate tests, benchmark results, user data, success states or launch evidence.
+EYT does not guarantee security, accessibility, legal compliance, performance, production readiness, maintainability or bug-free applications. It does not have authority to deploy, collect analytics, activate payments or delete live data. It is not a universal stack, UI theme, code generator or substitute for adversarial testing. The original observations come primarily from **one evolving project**, not a representative study of AI-generated software.
 
-See [origins and limitations](docs/ORIGINS_AND_LIMITATIONS.md) for the evidence boundary and [field notes](docs/FIELD_NOTES.md) for the source-derived failure modes that informed the guidance.
-
-## Contributing
-
-Feedback from engineers, designers, security practitioners, testers, and first-time builders is welcome. Please include concrete reproduction steps and negative findings; avoid unsupported claims. Read [CONTRIBUTING.md](CONTRIBUTING.md) for how to propose changes and protect private data.
+See [origins and limitations](docs/ORIGINS_AND_LIMITATIONS.md) and [field notes](docs/FIELD_NOTES.md). Criticism and corrections are welcome through issues and pull requests.
 
 ## License
 
-[MIT](LICENSE). References to standards and external guides are informational; those works remain under their own terms and are not included in this repository.
+[MIT](LICENSE). Copyright (c) 2026 Ishit Raj. Third-party references remain under their respective terms.

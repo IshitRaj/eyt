@@ -41,3 +41,31 @@ Keep timestamps as instants with clear timezone conversion; calendar dates are n
 ## Extension/sync specifics (only if applicable)
 
 A browser extension is a distinct, potentially untrusted client. Use explicit account pairing/authorization, least-privilege scopes and revocation; do not treat a popup's local profile label as proof of identity. Display limits must **not** truncate durable capture storage. Unsynced data should not be silently uploaded to another signed-in account. Credentials do not belong in capture exports. Local encryption helps with a narrow threat model, not full-device compromise.
+
+## A practical save/retry example
+
+A user presses Save, the server commits, but the response is lost. The UI cannot conclude either "saved" or "not saved" from a timeout alone.
+
+**For a durable mutation where duplicate creation matters:**
+
+1. Create a stable intent identity before the request.
+2. Keep the original payload and intent identity for retry or reconciliation.
+3. On the server, bind intent identity to the authenticated actor and operation; reject reuse with different payloads.
+4. If the first operation committed, return or discover the previous result instead of creating a duplicate.
+5. Keep the draft visible or recoverable while the outcome is unknown.
+
+For a tiny local app this may be satisfied by a uniquely indexed record and a deterministic retry. Don't introduce a distributed event bus just to implement Save.
+
+## State ownership boundaries
+
+| Kind of state | Example | Correct owner or lifetime |
+| --- | --- | --- |
+| Authoritative record | Saved expense, budget, page, note | Durable store/database with authorized operations |
+| Draft | Unsubmitted title and note | UI session/tab until success or explicit discard |
+| Query cache | Retrieved expense list | Scoped to requesting account and query |
+| Pending lock | Saving this expense right now | Specific intent/item, released after confirmed outcome |
+| Appearance preference | Theme and density | Local preference, or server setting if requested |
+| Offline outbox | Explicit unsynced capture | Bounded durable client queue, with real sync status |
+| Activity event | "Finished reading" occurred at time T | Persisted event or explicitly defined derived metric |
+
+If two kinds of state share a variable or generic global store, ask whether a failure could cause one to overwrite the other. An account switch can invalidate query results while preserving an unsent draft for the correct account. A live UI list can show only 20 items while the durable store retains all of them.

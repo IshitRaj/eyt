@@ -35,3 +35,26 @@ For each collected category define purpose, minimization, retention, access, sha
 ## Review evidence
 
 At minimum for an authenticated project, test both allowed and denied paths. Think in pairs: own record / foreign record; valid session / expired session; free / forged paid status; legitimate URL / internal redirect; first commit / duplicate retry; active device / revoked device. Record exactly which scenarios ran; code review alone is not proof that runtime controls work.
+
+## Safer defaults for an agent implementing account-based products
+
+These are decisions to make **before** writing the login form. A successful sign-in UI is not evidence of safe authentication.
+
+1. Prefer a maintained authentication framework when one fits the stack. If building directly with sessions, use cryptographically random session tokens, expiry, revocation, secure cookie attributes and origin/CSRF defenses suited to the deployment. Hash opaque lookup tokens at rest where the design permits, rather than saving a reusable cookie value in a readable session table.
+2. Protect registration, sign-in, recovery and pairing against guessing and abuse, for example with scoped rate limits and appropriate generic errors. Consider timing and user-enumeration behavior; do not assume identical strings mean identical behavior.
+3. Derive identity from a verified server session. Never accept owner or paid-plan authority from request JSON, local storage, hidden controls or a role claim not verified by the server.
+4. Include **relationship ownership**: a newly created expense referencing a category must use a category the same account owns. Query filtering alone is not enough when writes accept related IDs.
+5. Prefer secure-by-default errors: don't return raw SQL/driver/provider errors, internal network addresses, authentication secrets or personal data. Distinguish an unavailable service from no records.
+6. Review public endpoints that fetch external URLs. Metadata endpoints, image proxies and webhooks can be abuse paths even if the primary CRUD looks safe.
+7. For any stored private data, define what sign-out, account deletion, export and device revocation actually do before promising them in UI copy.
+
+### Minimal negative tests for a simple multi-account CRUD app
+
+- Account A creates an entry. Account B attempts GET, PATCH and DELETE with A's ID. All deny, and A's record remains unchanged.
+- Account B cannot add A's category or other related ID to its own record.
+- A signed-out request cannot mutate data, even when it sends a plausible `userId` field.
+- Invalid input returns a safe error and does not perform a partial write.
+- After logout or session expiry, the old session cannot authorize a request.
+- A fresh browser can navigate signup -> login -> the actual private screen without a redirect loop.
+
+Treat rate limiting, session-cookie configuration and public deployment security as release decisions, not optional flourishes. Don't invent a security guarantee from a static code inspection.

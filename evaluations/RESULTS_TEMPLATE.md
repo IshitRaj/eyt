@@ -1,4 +1,4 @@
-# Evaluation result  -  TEMPLATE, NO RUNS RECORDED
+# Evaluation result - blank template (not an evaluation)
 
 Copy this template for each **real** run. Do not fill it with hypothetical passing results.
 

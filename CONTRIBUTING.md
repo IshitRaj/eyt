@@ -17,6 +17,12 @@ Include: minimal shareable task; agent/model/version; tool permissions and envir
 
 Redact credentials, session cookies, tokens, real account records, user emails, provider metadata with secrets, and private code/documentation before opening an issue. When in doubt, create a synthetic reproduction.
 
+## Improving actionable guidance
+
+Prefer a useful **smell -> cause -> practical default -> verification** example over another generic statement such as "write scalable, secure code." A proposed rule should say **when it applies**, what a small project should do instead, and what would make the rule inappropriate. Code-quality proposals should include small before/after excerpts that preserve semantics, or explicitly note when behavior changes. UI advice must describe user goals and accessibility rather than impose one aesthetic.
+
+Report failures of the skill itself, including when it adds unnecessary complexity, introduces inaccessible patterns, changes approved UX or leaves a critical user journey untested.
+
 ## Updating the skill
 
 Keep one installable `skills/eyt/SKILL.md`. Put detailed policy in focused `references/` files and link to them directly from the skill. Prefer precise, conditional instructions over "always use [framework/pattern]". Respect higher-priority user instructions. Avoid promising that EYT eliminates bugs. Maintain beginner readability.

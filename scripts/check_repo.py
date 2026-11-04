@@ -70,6 +70,17 @@ def validate_links(root: Path) -> list[str]:
     return errors
 
 
+def validate_plain_dashes(root: Path) -> list[str]:
+    """Keep public Markdown free of em-dash punctuation for reading comfort."""
+    errors: list[str] = []
+    for doc in root.rglob("*.md"):
+        if ".git" in doc.parts:
+            continue
+        if "\u2014" in doc.read_text(encoding="utf-8"):
+            errors.append(f"Em dash in Markdown: {doc.relative_to(root)}")
+    return errors
+
+
 def check_repo(root: Path = ROOT) -> list[str]:
     expected = [
         root / "README.md",
@@ -83,6 +94,7 @@ def check_repo(root: Path = ROOT) -> list[str]:
     errors = [f"Missing required file: {f.relative_to(root)}" for f in expected if not f.is_file()]
     errors += validate_skill(root / "skills" / "eyt" / "SKILL.md")
     errors += validate_links(root)
+    errors += validate_plain_dashes(root)
     skill_files = list((root / "skills").rglob("SKILL.md"))
     if len(skill_files) != 1:
         errors.append(f"Expected one installable SKILL.md, found {len(skill_files)}")

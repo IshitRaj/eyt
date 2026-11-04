@@ -2,20 +2,26 @@
 
 ## Where EYT came from
 
-EYT v0.1.0 was drafted from a set of engineering notes supplied by the developer of a personal web/extension product, including early backend-readiness findings, UX/visual audit revisions, backend contracts, persistence and account recovery decisions, operational checklists and release-evidence notes. The supplied materials concern **one evolving project**. They are useful as *observations of failure modes and attempted corrections*, not as a representative sample of all AI-generated software.
+EYT began as v0.1.0, drafted from a set of engineering notes supplied by the developer of a personal web/extension product, including early backend-readiness findings, UX/visual audit revisions, backend contracts, persistence and account recovery decisions, operational checklists and release-evidence notes. The supplied materials concern **one evolving project**. They are useful as *observations of failure modes and attempted corrections*, not as a representative sample of all AI-generated software.
 
 The repository intentionally does **not** distribute those source documents, implementation code, credentials, internal environment names, deployment URLs, local test data, or brand-specific UI tokens. Examples have been generalized and rewritten. The author of the source project supplied the material for this exercise; its claims were not independently verified against the complete application source in preparing EYT.
+
+## Why v0.2.0 has more explicit instructions
+
+The original guidance named desirable outcomes but did not always show how to recognize or fix their opposites. The v0.2.0 release therefore makes the agent's intermediate decisions more explicit: engineering defaults, suspected failure modes, concrete TypeScript readability contrasts, task-specific UX choices and real-user-journey verification. This is a **hypothesis about better prompting**, not a demonstrated improvement.
+
+A user-run, single-task comparison of v0.1.0 was reviewed by a separate LLM. The report described a broken sign-in browser flow in the baseline and a better working flow in the EYT-assisted candidate, alongside a session-storage weakness in the EYT candidate. The underlying candidate repositories and raw testing traces were not independently available in this preparation. The result is not evidence that EYT caused the difference or that v0.2.0 performs better. No run has yet evaluated v0.2.0.
 
 ## What can be claimed
 
 - The skill package follows the open [Agent Skills format](https://agentskills.io/specification) structurally.
 - Guidance was informed by the submitted project's documented engineering decisions and by publicly available security/accessibility materials linked below.
-- The repository includes self-checks for packaging, links and example coverage. These are **structural checks only**.
+- The repository includes self-checks for packaging, links and basic structure. These are **structural checks only**.
 
 ## What cannot yet be claimed
 
-- **No controlled comparison** demonstrates that agents using EYT build fewer bugs or more secure products than agents without it.
-- It has **not** been exercised against multiple independent apps, agents, or model versions as part of this release.
+- **No independently replicated comparison** demonstrates that agents using EYT build fewer bugs, more readable code, better UI or more secure products than agents without it.
+- This v0.2.0 release has **not** been evaluated against multiple independent apps, agents, or model versions.
 - It has **not** undergone an independent security review, usability study, accessibility audit or expert peer review.
 - Following EYT cannot guarantee correct architecture, secure code, legal compliance, accessibility or production readiness.
 - Claims in the original project notes (including any test counts or deployment evidence) have not been reproduced here; no such counts are used as proof of EYT's effectiveness.

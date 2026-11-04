@@ -53,3 +53,25 @@ Next: [one actionable step]
 ```
 
 Do not forge logs, screenshots, passing counts, or reviewer approval. If browser or cloud access was unavailable, say so.
+
+## The missed-browser-flow failure mode
+
+An informal evaluation report described an implementation with many passing HTTP checks but a real browser sign-in page that redirected signed-out users to itself. This is a **reported example**, not an independently reproduced EYT benchmark. It illustrates the limit of direct HTTP tests: they may exercise handlers without following framework-specific streamed redirects or browser lifecycle behavior.
+
+When authentication is in scope, a minimal real-interaction smoke should test:
+
+1. Fresh browser opens signup and reaches a usable form without navigation loops.
+2. A new account can complete registration and arrive at its own data.
+3. Sign-out actually revokes/ends the session.
+4. The same account can sign back in and retrieve persisted data.
+5. Another account cannot access those records.
+
+If no browser is available, mark these checks **not verified**. Do not replace them with raw POST requests and claim the UI journey passed.
+
+## Minimum code-quality evidence
+
+Formatters and `tsc` are helpful but not measures of human readability. Review at least one **real request trace**: UI input -> validation -> authorization -> business operation -> persistence -> response -> visible state. Record if any step is hard to locate, hidden behind generic abstractions or packed into a long conditional. A significant refactor should also preserve negative tests and prior accepted input behavior.
+
+## Avoid test-count theater
+
+Report tests by **what they exercise**. "84 passing tests" can still miss the primary user journey. "Screenshot matches" can still miss keyboard focus and failed-save behavior. "No audit warnings" can still miss an authorization bug. Prefer a small set of checks that deliberately targets the most consequential failures over a larger set of shallow successes.

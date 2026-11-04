@@ -28,3 +28,9 @@ The original author's impression that AI agents often produce similar layouts or
 ## Source handling
 
 The original source archive and product `AGENTS.md` are intentionally excluded from the public repository. The examples above are paraphrased patterns, not copied project code or private operational material. For the scope of independent validation, see [origins and limitations](ORIGINS_AND_LIMITATIONS.md).
+
+## Preliminary agent-comparison lesson (unverified beyond the review)
+
+An informal user-run comparison of one generated reading tracker reported a particularly important verification blind spot: the baseline passed many direct HTTP checks but its signed-out sign-in route continuously redirected to itself in a browser. The EYT-assisted implementation reportedly completed the browser flow, but stored reusable session identifiers in plaintext in its SQLite session table. The reviewer was another LLM, and the full source/runtime traces were not independently available to this skill authoring pass.
+
+The actionable lessons are **(1) actually navigate primary UI journeys, not only call server endpoints, and (2) do not equate working UX with strong security**. These are established engineering concerns illustrated by a preliminary report, not measured evidence that EYT solves them.

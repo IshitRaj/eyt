@@ -24,3 +24,11 @@ This rubric is a starting point for independent reviewers, not an objective indu
 5. Treat time/cost or added complexity as outcomes too; safer but unusably slow/cumbersome is a trade-off to investigate.
 
 If independent checks are impossible, publish a *qualitative observation* rather than a scored or verified result.
+
+## Additional readability and design review (report separately)
+
+For v0.2.0 evaluation, record representative code paths, not only the aggregate "architecture/readability" score. Review auth, create/update and one derived query/summary. For each, report: number of meaningful code locations needed to follow it, untrusted-to-trusted boundary clarity, cohesion, branch complexity, naming, state ownership, and where a simple feature change would go.
+
+For UI, report where the primary action appears, what the first-use empty state says, whether pending/error states are truthful, whether containers have distinct purposes, and whether keyboard/narrow-screen behavior was tested. Avoid subjective "looks AI-generated" scores without an operational reason.
+
+For reproducibility, mask treatment names from reviewers and record any model/credit/permission differences. A single LLM reviewer should be treated as another fallible source of observations, not an independent audit.
