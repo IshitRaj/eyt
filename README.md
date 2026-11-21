@@ -4,7 +4,7 @@
 
 EYT is an experimental, open-source [Agent Skill](https://agentskills.io/specification) for building and reviewing **web applications and SaaS**. It tries to act as the engineering guide a user might not know to ask for: choosing a sensible architecture, avoiding generic UI decisions, writing readable code, protecting data, handling failure and checking whether real user journeys work.
 
-**Version: v0.2.0 (experimental, 4 November 2026).** This release passes repository packaging checks, but **has not been evaluated in comparative coding-agent runs**. A previous, informal comparison evaluated v0.1.0 only and does not establish that EYT caused the reported differences. EYT is not proven to reduce defects, improve readability or make software secure. Use it critically and report where it fails.
+**Version v0.3.0 (experimental, 21 November 2026).** This release contains research-informed engineering guidance. Its real-world effectiveness has yet to be established through controlled evaluation.
 
 ## The problem
 
@@ -12,18 +12,11 @@ Someone can describe the app they need without knowing to request server-side au
 
 EYT attempts to bridge the gap **without turning every hobby project into enterprise architecture**. It tells the agent what to examine, what default to choose, what AI-generated shortcuts to watch for, and how to test that the decision works.
 
-## What changed in v0.2.0
+## What changed in v0.3.0
 
-Version 0.1.0 mostly described desired engineering outcomes. Version 0.2.0 makes those instructions more operational:
+The shorter core skill now asks the agent to identify what a revision must preserve, rerun those checks, and investigate a failed repair against the last working state. The references show how to check whether a regression test can detect the original fault, scope tool permissions, and exercise a UI with real content, keyboard input and failure recovery.
 
-1. **Default engineering decisions:** an explicit action table for UI, writes, accounts, search, async state and deployment.
-2. **Agent failure-pattern guide:** common shortcuts paired with consequences, a better default and a check that could expose the mistake.
-3. **Code craft examples:** concrete TypeScript before/after examples showing named intermediate values, cohesive functions and clear state.
-4. **Task-specific UX guidance:** common generic-interface warning signs with constructive alternatives, plus real empty/loading/error/pending states.
-5. **Authentication and verification probes:** entire browser journeys matter; a passing API suite can miss an unusable sign-in screen.
-6. **Proportionate rigor:** adapt to static sites, local tools and authenticated products. Don't add layers just to satisfy a checklist.
-
-These are **changes to the guidance**, not measured improvements in agents' results. Version 0.2.0 has no coding-agent evaluation yet. The skill cannot replace an experienced reviewer or compensate for an agent lacking basic technical ability or tool access. See the [changelog](CHANGELOG.md) and [v0.2.0 release notes](releases/v0.2.0.md) for a precise summary.
+The evaluation materials now use neutral task prompts, repeated paired runs and audited hidden checks. The research notes distinguish benchmark findings, practitioner design examples and decisions that still need testing. See the [research review](docs/RESEARCH.md), [comparison protocol](evaluations/RUBRIC.md) and [release notes](releases/v0.3.0.md).
 
 ## A one-minute example
 
@@ -62,9 +55,9 @@ cp -R /path/to/eyt/skills/eyt .claude/skills/eyt
 
 Restart or reload a session after installation if your agent doesn't discover new skills automatically. Consult your client documentation if the path differs. We have not independently verified every client on every version.
 
-## Upgrading from v0.1.0
+## Upgrading an existing installation
 
-Replace the existing project-local `eyt` skill directory with the full `skills/eyt/` folder from v0.2.0, including all reference files. If you modified a local copy, review and preserve those changes first. Open a new agent session and confirm it loads the intended version.
+Replace the existing project-local `eyt` skill directory with the full `skills/eyt/` folder from v0.3.0, including all reference files. If you modified a local copy, review and preserve those changes first. Open a new agent session and confirm it loads the intended version.
 
 The skill name and invocation remain `eyt`. Existing projects do **not** need architecture or UI rewrites just because the guidance changed. EYT should continue to respect approved designs, existing contracts and data.
 
@@ -120,7 +113,7 @@ The primary skill is intentionally compact. It asks the agent to read relevant r
 
 ## Testing and evidence
 
-There has been one **informal, unreplicated comparison reported by a user**, reviewed by a second LLM. It reported a better end-to-end user flow in the EYT-assisted candidate, but also found a session-storage weakness there. The candidate source trees and original execution traces were not independently audited here. The reviewer report alone **does not establish causality, general improvement or security effectiveness**. There has been no comparative evaluation of v0.2.0.
+There has been one **informal, unreplicated comparison reported by a user**, reviewed by a second LLM. It reported a better end-to-end user flow in the EYT-assisted candidate, but also found a session-storage weakness there. The candidate source trees and original execution traces were not independently audited here. The reviewer report alone **does not establish causality, general improvement or security effectiveness**. Neither v0.2.0 nor v0.3.0 has a controlled comparison.
 
 To help evaluate EYT:
 

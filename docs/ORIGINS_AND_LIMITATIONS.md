@@ -12,6 +12,8 @@ The original guidance named desirable outcomes but did not always show how to re
 
 A user-run, single-task comparison of v0.1.0 was reviewed by a separate LLM. The report described a broken sign-in browser flow in the baseline and a better working flow in the EYT-assisted candidate, alongside a session-storage weakness in the EYT candidate. The underlying candidate repositories and raw testing traces were not independently available in this preparation. The result is not evidence that EYT caused the difference or that v0.2.0 performs better. No run has yet evaluated v0.2.0.
 
+For the evidence and design decisions behind v0.3.0, see the [research review](RESEARCH.md).
+
 ## What can be claimed
 
 - The skill package follows the open [Agent Skills format](https://agentskills.io/specification) structurally.
@@ -21,7 +23,7 @@ A user-run, single-task comparison of v0.1.0 was reviewed by a separate LLM. The
 ## What cannot yet be claimed
 
 - **No independently replicated comparison** demonstrates that agents using EYT build fewer bugs, more readable code, better UI or more secure products than agents without it.
-- This v0.2.0 release has **not** been evaluated against multiple independent apps, agents, or model versions.
+- The v0.3.0 release has **not** been evaluated against multiple independent apps, agents, or model versions.
 - It has **not** undergone an independent security review, usability study, accessibility audit or expert peer review.
 - Following EYT cannot guarantee correct architecture, secure code, legal compliance, accessibility or production readiness.
 - Claims in the original project notes (including any test counts or deployment evidence) have not been reproduced here; no such counts are used as proof of EYT's effectiveness.

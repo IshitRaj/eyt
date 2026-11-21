@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0] - 2026-11-21 (experimental prerelease)
+
+- Shortened the skill entry point and linked all nine references by task. Added checks for retained requirements after revisions.
+- Added practical tests of assertion effectiveness and scoped tool access. Revised the UI guide around actual decisions, interaction states and accessible controls.
+- Removed EYT invocations from shared evaluation prompts. Added paired two-round trials, grader audits, seeded faults and reporting of costs and missing observations.
+- Documented the [evidence and its limits](docs/RESEARCH.md). Controlled evaluation of EYT remains outstanding.
+
 ## [0.2.0] - 2026-11-04
 
 - Reworked `SKILL.md` into a more explicit engineering workflow with actionable defaults and concrete checks.

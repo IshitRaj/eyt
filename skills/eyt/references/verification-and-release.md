@@ -72,6 +72,8 @@ If no browser is available, mark these checks **not verified**. Do not replace t
 
 Formatters and `tsc` are helpful but not measures of human readability. Review at least one **real request trace**: UI input -> validation -> authorization -> business operation -> persistence -> response -> visible state. Record if any step is hard to locate, hidden behind generic abstractions or packed into a long conditional. A significant refactor should also preserve negative tests and prior accepted input behavior.
 
-## Avoid test-count theater
+## Check what the test can detect
 
-Report tests by **what they exercise**. "84 passing tests" can still miss the primary user journey. "Screenshot matches" can still miss keyboard focus and failed-save behavior. "No audit warnings" can still miss an authorization bug. Prefer a small set of checks that deliberately targets the most consequential failures over a larger set of shallow successes.
+Derive the expected outcome from the requirement or an independent fixture. A test that calls the implementation to calculate its own expected result can repeat the same mistake. For a failed save, assert that the draft survives and the persisted record retains its previous value. Checking that a mock was called misses both outcomes.
+
+For a bug fix, run the regression check against the pre-fix behavior when practical. Confirm it fails for the reported reason and passes after the fix. If the test passes both times, inspect its setup, assertion and entry point. For a new test suite, a disposable copy with one plausible behavioral fault can serve the same purpose. Keep deliberate faults out of shipped code.
